@@ -74,4 +74,4 @@ make test
 
 ## Licence
 
-[MIT](LICENCE) - Copyright 2025 Rootly Inc.
+[MIT](LICENCE) - Copyright 2026 Rootly Inc.
