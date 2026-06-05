@@ -3992,6 +3992,80 @@
         }
       }
     },
+    "/v1/bulk_imports": {
+      "post": {
+        "summary": "Create a bulk import",
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ],
+        "tags": [
+          "Bulk Imports"
+        ],
+        "description": "Create a new bulk import for incidents. Requires global API key authentication.",
+        "operationId": "createBulkImport",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "bulk import created"
+          },
+          "403": {
+            "description": "unauthorized - user lacks incident create permission"
+          },
+          "422": {
+            "description": "invalid parameters"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/new_bulk_import"
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/v1/bulk_imports/{id}": {
+      "get": {
+        "summary": "Get bulk import status",
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ],
+        "tags": [
+          "Bulk Imports"
+        ],
+        "description": "Retrieves the current status of a bulk import job.\n\n**Use this endpoint to:**\n- Poll for import progress\n- Check validation errors if status is `validation_failed`\n- Get final results when status is `completed` or `failed`\n",
+        "operationId": "getBulkImport",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Bulk import ID returned from the create endpoint",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success"
+          },
+          "404": {
+            "description": "not found"
+          },
+          "403": {
+            "description": "organization API keys feature not enabled"
+          }
+        }
+      }
+    },
     "/v1/catalog_checklist_templates": {
       "post": {
         "summary": "Creates a catalog checklist template",
@@ -23769,7 +23843,14 @@
         ],
         "responses": {
           "200": {
-            "description": "success"
+            "description": "success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/oncall_list"
+                }
+              }
+            }
           },
           "404": {
             "description": "resource not found when alerting is disabled",
@@ -38858,6 +38939,171 @@
           "data",
           "links",
           "meta"
+        ]
+      },
+      "bulk_import_attributes": {
+        "type": "object",
+        "properties": {
+          "entity_type": {
+            "type": "string",
+            "enum": [
+              "Incident"
+            ],
+            "description": "Type of entity being imported"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "validating",
+              "validation_failed",
+              "importing",
+              "indexing",
+              "completed",
+              "failed"
+            ],
+            "description": "Current status of the import"
+          },
+          "file_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL of the JSONL file being imported"
+          },
+          "notification_email": {
+            "type": "string",
+            "format": "email",
+            "description": "Email address for notifications"
+          },
+          "total_records": {
+            "type": "integer",
+            "nullable": true,
+            "description": "Total number of records in the file"
+          },
+          "processed_records": {
+            "type": "integer",
+            "description": "Number of records processed so far"
+          },
+          "failed_records": {
+            "type": "integer",
+            "description": "Number of records that failed to import"
+          },
+          "validation_errors": {
+            "type": "object",
+            "nullable": true,
+            "description": "Validation errors encountered during validation phase"
+          },
+          "error_message": {
+            "type": "string",
+            "nullable": true,
+            "description": "Error message if import failed"
+          },
+          "progress_percentage": {
+            "type": "number",
+            "format": "float",
+            "description": "Import progress percentage (0-100)"
+          },
+          "started_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "description": "When import processing started"
+          },
+          "completed_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "description": "When import completed or failed"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the bulk import was created"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the bulk import was last updated"
+          }
+        },
+        "required": [
+          "status",
+          "processed_records",
+          "failed_records",
+          "progress_percentage"
+        ]
+      },
+      "new_bulk_import": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "entity_type": {
+                    "type": "string",
+                    "enum": [
+                      "Incident"
+                    ],
+                    "description": "Type of entity to import (currently only 'Incident' is supported)"
+                  },
+                  "file_url": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "URL of the JSONL file to import. Must be accessible via HTTPS."
+                  },
+                  "notification_email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "Email address to receive import status notifications"
+                  }
+                },
+                "required": [
+                  "entity_type",
+                  "file_url",
+                  "notification_email"
+                ]
+              }
+            },
+            "required": [
+              "attributes"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "bulk_import_response": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "bulk_import"
+                ]
+              },
+              "attributes": {
+                "$ref": "#/components/schemas/bulk_import_attributes"
+              }
+            },
+            "required": [
+              "id",
+              "type",
+              "attributes"
+            ]
+          }
+        },
+        "required": [
+          "data"
         ]
       },
       "new_catalog": {
@@ -74392,6 +74638,191 @@
           "total_count",
           "total_pages"
         ]
+      },
+      "oncall": {
+        "type": "object",
+        "properties": {
+          "escalation_policy_id": {
+            "type": "string",
+            "description": "ID of the escalation policy"
+          },
+          "escalation_policy_name": {
+            "type": "string",
+            "description": "Name of the escalation policy"
+          },
+          "escalation_policy_path_id": {
+            "type": "string",
+            "nullable": true,
+            "description": "ID of the escalation policy path"
+          },
+          "escalation_policy_path_name": {
+            "type": "string",
+            "nullable": true,
+            "description": "Name of the escalation policy path"
+          },
+          "notification_type": {
+            "type": "string",
+            "enum": [
+              "audible",
+              "quiet"
+            ],
+            "nullable": true,
+            "description": "Notification type of the escalation path (audible or quiet)"
+          },
+          "is_default_path": {
+            "type": "boolean",
+            "nullable": true,
+            "description": "Whether this is the default escalation path"
+          },
+          "escalation_level": {
+            "type": "integer",
+            "description": "Level within the escalation policy"
+          },
+          "schedule_id": {
+            "type": "string",
+            "description": "ID of the schedule",
+            "nullable": true
+          },
+          "schedule_name": {
+            "type": "string",
+            "description": "Name of the schedule",
+            "nullable": true
+          },
+          "user_id": {
+            "type": "integer",
+            "description": "ID of the on-call user"
+          },
+          "starts_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Start datetime of the on-call shift"
+          },
+          "ends_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "End datetime of the on-call shift"
+          }
+        },
+        "required": [
+          "escalation_policy_id",
+          "escalation_policy_name",
+          "user_id",
+          "starts_at",
+          "ends_at"
+        ]
+      },
+      "oncall_list": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "Unique ID of the on-call entry"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "on_call_resources"
+                  ]
+                },
+                "attributes": {
+                  "type": "object",
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/oncall"
+                    }
+                  ]
+                },
+                "relationships": {
+                  "$ref": "#/components/schemas/oncall_relationships"
+                }
+              },
+              "required": [
+                "id",
+                "type",
+                "attributes"
+              ]
+            }
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/jsonapi_included_resource"
+            }
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "oncall_relationships": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "users"
+                    ]
+                  }
+                },
+                "nullable": true
+              }
+            }
+          },
+          "schedule": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "schedules"
+                    ]
+                  }
+                },
+                "nullable": true
+              }
+            }
+          },
+          "escalation_policy": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "escalation_policies"
+                    ]
+                  }
+                },
+                "nullable": true
+              }
+            }
+          }
+        }
       },
       "new_on_call_pay_report": {
         "type": "object",
