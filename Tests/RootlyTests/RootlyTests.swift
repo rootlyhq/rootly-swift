@@ -15,7 +15,7 @@ import Foundation
         body: nil,
         baseURL: Rootly.defaultServerURL,
         operationID: "listIncidents",
-        next: { request, body, url in
+        next: { request, _, _ in
             #expect(request.headerFields[.authorization] == "Bearer test-token-123")
             return (.init(status: .ok), nil)
         }

@@ -8,6 +8,7 @@ line_length: 120
 disabled_rules:
   - trailing_whitespace
   - opening_brace
+  - trailing_comma
 
 opt_in_rules:
   - closure_spacing
