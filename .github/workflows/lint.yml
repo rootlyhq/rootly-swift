@@ -11,6 +11,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
       - name: Run SwiftLint
-        uses: norio-nomura/action-swiftlint@b3fcfb2c5a82d46c48495dda0bcb4c0e981bfc54 # 3.2.1
+        uses: norio-nomura/action-swiftlint@9f4dcd7fd46b4e75d7935cf2f4df406d5cae3684 # 3.2.1
         with:
           args: --strict
