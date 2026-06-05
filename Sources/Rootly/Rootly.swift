@@ -12,6 +12,7 @@ public func makeClient(
 ) -> Client {
     Client(
         serverURL: serverURL,
+        configuration: .init(dateTranscoder: .iso8601WithFractionalSeconds),
         transport: transport,
         middlewares: [BearerMiddleware(token: token)]
     )
