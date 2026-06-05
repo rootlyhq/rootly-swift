@@ -41374,6 +41374,28 @@
           "meta"
         ]
       },
+      "incidents_chart_response": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "uptime_chart_response": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
       "new_communications_stage": {
         "type": "object",
         "properties": {
@@ -53295,18 +53317,6 @@
           "updated_at"
         ]
       },
-      "incidents_chart_response": {
-        "type": "object",
-        "required": [
-          "data"
-        ]
-      },
-      "uptime_chart_response": {
-        "type": "object",
-        "required": [
-          "data"
-        ]
-      },
       "functionality_response": {
         "type": "object",
         "properties": {
@@ -53694,12 +53704,25 @@
             "required": [
               "title",
               "link"
-            ]
+            ],
+            "properties": {
+              "title": {
+                "type": "string"
+              },
+              "link": {
+                "type": "string"
+              }
+            }
           },
           {
             "required": [
               "playbook_id"
-            ]
+            ],
+            "properties": {
+              "playbook_id": {
+                "type": "string"
+              }
+            }
           }
         ]
       },
@@ -53987,12 +54010,38 @@
           {
             "required": [
               "schedule"
-            ]
+            ],
+            "properties": {
+              "schedule": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
           },
           {
             "required": [
               "escalation_policy"
-            ]
+            ],
+            "properties": {
+              "escalation_policy": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
           }
         ]
       },
@@ -56277,12 +56326,25 @@
             "required": [
               "title",
               "link"
-            ]
+            ],
+            "properties": {
+              "title": {
+                "type": "string"
+              },
+              "link": {
+                "type": "string"
+              }
+            }
           },
           {
             "required": [
               "playbook_id"
-            ]
+            ],
+            "properties": {
+              "playbook_id": {
+                "type": "string"
+              }
+            }
           }
         ]
       },
@@ -56767,7 +56829,23 @@
           {
             "required": [
               "channels"
-            ]
+            ],
+            "properties": {
+              "channels": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         ]
       },
@@ -56813,6 +56891,20 @@
               "send_microsoft_teams_blocks"
             ]
           },
+          "channels": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
+            }
+          },
           "attachments": {
             "type": "string",
             "description": "Support liquid markup. Needs to be a valid JSON string after liquid is parsed"
@@ -56825,7 +56917,23 @@
           {
             "required": [
               "channels"
-            ]
+            ],
+            "properties": {
+              "channels": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         ]
       },
@@ -57208,12 +57316,38 @@
           {
             "required": [
               "project"
-            ]
+            ],
+            "properties": {
+              "project": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
           },
           {
             "required": [
               "workflow_state"
-            ]
+            ],
+            "properties": {
+              "workflow_state": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
           }
         ]
       },
@@ -57755,12 +57889,28 @@
           {
             "required": [
               "service_ids"
-            ]
+            ],
+            "properties": {
+              "service_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
           },
           {
             "required": [
               "github_repository_names"
-            ]
+            ],
+            "properties": {
+              "github_repository_names": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
           }
         ]
       },
@@ -57824,12 +57974,28 @@
           {
             "required": [
               "service_ids"
-            ]
+            ],
+            "properties": {
+              "service_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
           },
           {
             "required": [
               "gitlab_repository_names"
-            ]
+            ],
+            "properties": {
+              "gitlab_repository_names": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
           }
         ]
       },
@@ -58271,12 +58437,38 @@
           {
             "required": [
               "escalation_policy"
-            ]
+            ],
+            "properties": {
+              "escalation_policy": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
           },
           {
             "required": [
               "schedule"
-            ]
+            ],
+            "properties": {
+              "schedule": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
           }
         ]
       },
@@ -58340,17 +58532,54 @@
           {
             "required": [
               "slack_users"
-            ]
+            ],
+            "properties": {
+              "slack_users": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           },
           {
             "required": [
               "slack_user_groups"
-            ]
+            ],
+            "properties": {
+              "slack_user_groups": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           },
           {
             "required": [
               "slack_emails"
-            ]
+            ],
+            "properties": {
+              "slack_emails": {
+                "type": "string"
+              }
+            }
           }
         ]
       },
@@ -59022,12 +59251,44 @@
           {
             "required": [
               "users"
-            ]
+            ],
+            "properties": {
+              "users": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           },
           {
             "required": [
               "escalation_policies"
-            ]
+            ],
+            "properties": {
+              "escalation_policies": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         ]
       },
@@ -59591,17 +59852,65 @@
           {
             "required": [
               "channels"
-            ]
+            ],
+            "properties": {
+              "channels": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           },
           {
             "required": [
               "slack_users"
-            ]
+            ],
+            "properties": {
+              "slack_users": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           },
           {
             "required": [
               "slack_user_groups"
-            ]
+            ],
+            "properties": {
+              "slack_user_groups": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         ]
       },
@@ -61137,17 +61446,65 @@
           {
             "required": [
               "channels"
-            ]
+            ],
+            "properties": {
+              "channels": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           },
           {
             "required": [
               "slack_users"
-            ]
+            ],
+            "properties": {
+              "slack_users": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           },
           {
             "required": [
               "slack_user_groups"
-            ]
+            ],
+            "properties": {
+              "slack_user_groups": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         ]
       },
