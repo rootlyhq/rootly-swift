@@ -220,6 +220,7 @@
                 "emailed",
                 "slacked",
                 "ms_teams_messaged",
+                "google_chat_messaged",
                 "called",
                 "texted",
                 "notified",
@@ -22619,6 +22620,49 @@
         }
       }
     },
+    "/v1/incidents/{incident_id}/meeting_recordings/import": {
+      "post": {
+        "summary": "Import a meeting recording",
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ],
+        "tags": [
+          "Meeting Recordings"
+        ],
+        "description": "Import an externally captured meeting recording and attach it to an incident. Video and transcript are fetched asynchronously. The existing POST /v1/incidents/{incident_id}/meeting_recordings endpoint invites a bot — this endpoint handles recordings that were captured outside of the bot flow.",
+        "operationId": "importMeetingRecording",
+        "parameters": [
+          {
+            "name": "incident_id",
+            "in": "path",
+            "description": "Incident UUID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "recording imported"
+          },
+          "422": {
+            "description": "validation error (e.g. unsupported source, duplicate recording)"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/import_meeting_recording"
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/meeting_recordings/{id}": {
       "get": {
         "summary": "Get a meeting recording",
@@ -33360,6 +33404,7 @@
               "workflow",
               "live_call_routing",
               "mobile",
+              "google_chat",
               "pagerduty",
               "opsgenie",
               "victorops",
@@ -33655,6 +33700,7 @@
                   "workflow",
                   "live_call_routing",
                   "mobile",
+                  "google_chat",
                   "pagerduty",
                   "opsgenie",
                   "victorops",
@@ -33750,6 +33796,7 @@
                     "workflow",
                     "live_call_routing",
                     "mobile",
+                    "google_chat",
                     "pagerduty",
                     "opsgenie",
                     "victorops",
@@ -34060,6 +34107,7 @@
               "emailed",
               "slacked",
               "ms_teams_messaged",
+              "google_chat_messaged",
               "called",
               "texted",
               "notified",
@@ -74467,6 +74515,55 @@
           "prev",
           "next",
           "last"
+        ]
+      },
+      "import_meeting_recording": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string",
+            "description": "Import source (currently only \"recall_desktop_sdk\")",
+            "enum": [
+              "recall_desktop_sdk"
+            ]
+          },
+          "recall_recording_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "External recording UUID (required when source is recall_desktop_sdk)"
+          },
+          "platform": {
+            "type": "string",
+            "description": "Meeting platform",
+            "enum": [
+              "zoom",
+              "google_meet",
+              "microsoft_teams",
+              "webex"
+            ]
+          },
+          "started_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the recording started",
+            "nullable": true
+          },
+          "ended_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the recording ended",
+            "nullable": true
+          },
+          "meeting_url": {
+            "type": "string",
+            "description": "Original meeting URL",
+            "nullable": true
+          }
+        },
+        "required": [
+          "source",
+          "recall_recording_id",
+          "platform"
         ]
       },
       "meeting_recording": {
