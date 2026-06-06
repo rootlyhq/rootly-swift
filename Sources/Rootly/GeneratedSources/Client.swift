@@ -36444,6 +36444,59 @@ public struct Client: APIProtocol {
             }
         )
     }
+    /// Import a meeting recording
+    ///
+    /// Import an externally captured meeting recording and attach it to an incident. Video and transcript are fetched asynchronously. The existing POST /v1/incidents/{incident_id}/meeting_recordings endpoint invites a bot — this endpoint handles recordings that were captured outside of the bot flow.
+    ///
+    /// - Remark: HTTP `POST /v1/incidents/{incident_id}/meeting_recordings/import`.
+    /// - Remark: Generated from `#/paths//v1/incidents/{incident_id}/meeting_recordings/import/post(importMeetingRecording)`.
+    public func importMeetingRecording(_ input: Operations.ImportMeetingRecording.Input) async throws -> Operations.ImportMeetingRecording.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.ImportMeetingRecording.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/v1/incidents/{}/meeting_recordings/import",
+                    parameters: [
+                        input.path.incidentId
+                    ]
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .post
+                )
+                suppressMutabilityWarning(&request)
+                let body: OpenAPIRuntime.HTTPBody?
+                switch input.body {
+                case .none:
+                    body = nil
+                case let .applicationVnd_apiJson(value):
+                    body = try converter.setOptionalRequestBodyAsJSON(
+                        value,
+                        headerFields: &request.headerFields,
+                        contentType: "application/vnd.api+json; charset=utf-8"
+                    )
+                }
+                return (request, body)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 201:
+                    return .created(.init())
+                case 422:
+                    return .unprocessableContent(.init())
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
     /// Get a meeting recording
     ///
     /// Retrieve a single meeting recording session including its status, duration, speaker count, word count, and transcript summary.
