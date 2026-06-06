@@ -2,6 +2,7 @@ excluded:
   - .build
   - .swiftpm
   - DerivedData
+  - Sources/Rootly/GeneratedSources
 
 line_length: 120
 
