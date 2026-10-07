@@ -364,6 +364,223 @@ public struct Client: APIProtocol {
             }
         )
     }
+    /// Retrieves the team's alert configuration
+    ///
+    /// - Remark: HTTP `GET /v1/alert_configuration`.
+    /// - Remark: Generated from `#/paths//v1/alert_configuration/get(getAlertConfiguration)`.
+    public func getAlertConfiguration(_ input: Operations.GetAlertConfiguration.Input) async throws -> Operations.GetAlertConfiguration.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.GetAlertConfiguration.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/v1/alert_configuration",
+                    parameters: []
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .get
+                )
+                suppressMutabilityWarning(&request)
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                return (request, nil)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.GetAlertConfiguration.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.AlertConfigurationResponse.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                case 404:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.GetAlertConfiguration.Output.NotFound.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ErrorsList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .notFound(.init(body: body))
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
+    /// Updates the team's alert configuration
+    ///
+    /// - Remark: HTTP `PUT /v1/alert_configuration`.
+    /// - Remark: Generated from `#/paths//v1/alert_configuration/put(updateAlertConfiguration)`.
+    public func updateAlertConfiguration(_ input: Operations.UpdateAlertConfiguration.Input) async throws -> Operations.UpdateAlertConfiguration.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.UpdateAlertConfiguration.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/v1/alert_configuration",
+                    parameters: []
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .put
+                )
+                suppressMutabilityWarning(&request)
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                let body: OpenAPIRuntime.HTTPBody?
+                switch input.body {
+                case let .applicationVnd_apiJson(value):
+                    body = try converter.setRequiredRequestBodyAsJSON(
+                        value,
+                        headerFields: &request.headerFields,
+                        contentType: "application/vnd.api+json; charset=utf-8"
+                    )
+                }
+                return (request, body)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.UpdateAlertConfiguration.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.AlertConfigurationResponse.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                case 403:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.UpdateAlertConfiguration.Output.Forbidden.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ErrorsList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .forbidden(.init(body: body))
+                case 404:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.UpdateAlertConfiguration.Output.NotFound.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ErrorsList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .notFound(.init(body: body))
+                case 422:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.UpdateAlertConfiguration.Output.UnprocessableContent.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ErrorsList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .unprocessableContent(.init(body: body))
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
     /// List alert events
     ///
     /// List alert_events
@@ -2054,328 +2271,6 @@ public struct Client: APIProtocol {
             }
         )
     }
-    /// List alert re-trigger rules
-    ///
-    /// - Remark: HTTP `GET /v1/alert_retrigger_rules`.
-    /// - Remark: Generated from `#/paths//v1/alert_retrigger_rules/get(listAlertRetriggerRules)`.
-    public func listAlertRetriggerRules(_ input: Operations.ListAlertRetriggerRules.Input) async throws -> Operations.ListAlertRetriggerRules.Output {
-        try await client.send(
-            input: input,
-            forOperation: Operations.ListAlertRetriggerRules.id,
-            serializer: { input in
-                let path = try converter.renderedPath(
-                    template: "/v1/alert_retrigger_rules",
-                    parameters: []
-                )
-                var request: HTTPTypes.HTTPRequest = .init(
-                    soar_path: path,
-                    method: .get
-                )
-                suppressMutabilityWarning(&request)
-                converter.setAcceptHeader(
-                    in: &request.headerFields,
-                    contentTypes: input.headers.accept
-                )
-                return (request, nil)
-            },
-            deserializer: { response, responseBody in
-                switch response.status.code {
-                case 200:
-                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
-                    let body: Operations.ListAlertRetriggerRules.Output.Ok.Body
-                    let chosenContentType = try converter.bestContentType(
-                        received: contentType,
-                        options: [
-                            "application/vnd.api+json"
-                        ]
-                    )
-                    switch chosenContentType {
-                    case "application/vnd.api+json":
-                        body = try await converter.getResponseBodyAsJSON(
-                            Components.Schemas.AlertRetriggerRuleList.self,
-                            from: responseBody,
-                            transforming: { value in
-                                .applicationVnd_apiJson(value)
-                            }
-                        )
-                    default:
-                        preconditionFailure("bestContentType chose an invalid content type.")
-                    }
-                    return .ok(.init(body: body))
-                default:
-                    return .undocumented(
-                        statusCode: response.status.code,
-                        .init(
-                            headerFields: response.headerFields,
-                            body: responseBody
-                        )
-                    )
-                }
-            }
-        )
-    }
-    /// Creates an alert re-trigger rule
-    ///
-    /// - Remark: HTTP `POST /v1/alert_retrigger_rules`.
-    /// - Remark: Generated from `#/paths//v1/alert_retrigger_rules/post(createAlertRetriggerRule)`.
-    public func createAlertRetriggerRule(_ input: Operations.CreateAlertRetriggerRule.Input) async throws -> Operations.CreateAlertRetriggerRule.Output {
-        try await client.send(
-            input: input,
-            forOperation: Operations.CreateAlertRetriggerRule.id,
-            serializer: { input in
-                let path = try converter.renderedPath(
-                    template: "/v1/alert_retrigger_rules",
-                    parameters: []
-                )
-                var request: HTTPTypes.HTTPRequest = .init(
-                    soar_path: path,
-                    method: .post
-                )
-                suppressMutabilityWarning(&request)
-                converter.setAcceptHeader(
-                    in: &request.headerFields,
-                    contentTypes: input.headers.accept
-                )
-                let body: OpenAPIRuntime.HTTPBody?
-                switch input.body {
-                case let .applicationVnd_apiJson(value):
-                    body = try converter.setRequiredRequestBodyAsJSON(
-                        value,
-                        headerFields: &request.headerFields,
-                        contentType: "application/vnd.api+json; charset=utf-8"
-                    )
-                }
-                return (request, body)
-            },
-            deserializer: { response, responseBody in
-                switch response.status.code {
-                case 201:
-                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
-                    let body: Operations.CreateAlertRetriggerRule.Output.Created.Body
-                    let chosenContentType = try converter.bestContentType(
-                        received: contentType,
-                        options: [
-                            "application/vnd.api+json"
-                        ]
-                    )
-                    switch chosenContentType {
-                    case "application/vnd.api+json":
-                        body = try await converter.getResponseBodyAsJSON(
-                            Components.Schemas.AlertRetriggerRuleResponse.self,
-                            from: responseBody,
-                            transforming: { value in
-                                .applicationVnd_apiJson(value)
-                            }
-                        )
-                    default:
-                        preconditionFailure("bestContentType chose an invalid content type.")
-                    }
-                    return .created(.init(body: body))
-                case 422:
-                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
-                    let body: Operations.CreateAlertRetriggerRule.Output.UnprocessableContent.Body
-                    let chosenContentType = try converter.bestContentType(
-                        received: contentType,
-                        options: [
-                            "application/vnd.api+json"
-                        ]
-                    )
-                    switch chosenContentType {
-                    case "application/vnd.api+json":
-                        body = try await converter.getResponseBodyAsJSON(
-                            Components.Schemas.ErrorsList.self,
-                            from: responseBody,
-                            transforming: { value in
-                                .applicationVnd_apiJson(value)
-                            }
-                        )
-                    default:
-                        preconditionFailure("bestContentType chose an invalid content type.")
-                    }
-                    return .unprocessableContent(.init(body: body))
-                default:
-                    return .undocumented(
-                        statusCode: response.status.code,
-                        .init(
-                            headerFields: response.headerFields,
-                            body: responseBody
-                        )
-                    )
-                }
-            }
-        )
-    }
-    /// Retrieves an alert re-trigger rule
-    ///
-    /// - Remark: HTTP `GET /v1/alert_retrigger_rules/{id}`.
-    /// - Remark: Generated from `#/paths//v1/alert_retrigger_rules/{id}/get(getAlertRetriggerRule)`.
-    public func getAlertRetriggerRule(_ input: Operations.GetAlertRetriggerRule.Input) async throws -> Operations.GetAlertRetriggerRule.Output {
-        try await client.send(
-            input: input,
-            forOperation: Operations.GetAlertRetriggerRule.id,
-            serializer: { input in
-                let path = try converter.renderedPath(
-                    template: "/v1/alert_retrigger_rules/{}",
-                    parameters: [
-                        input.path.id
-                    ]
-                )
-                var request: HTTPTypes.HTTPRequest = .init(
-                    soar_path: path,
-                    method: .get
-                )
-                suppressMutabilityWarning(&request)
-                converter.setAcceptHeader(
-                    in: &request.headerFields,
-                    contentTypes: input.headers.accept
-                )
-                return (request, nil)
-            },
-            deserializer: { response, responseBody in
-                switch response.status.code {
-                case 200:
-                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
-                    let body: Operations.GetAlertRetriggerRule.Output.Ok.Body
-                    let chosenContentType = try converter.bestContentType(
-                        received: contentType,
-                        options: [
-                            "application/vnd.api+json"
-                        ]
-                    )
-                    switch chosenContentType {
-                    case "application/vnd.api+json":
-                        body = try await converter.getResponseBodyAsJSON(
-                            Components.Schemas.AlertRetriggerRuleResponse.self,
-                            from: responseBody,
-                            transforming: { value in
-                                .applicationVnd_apiJson(value)
-                            }
-                        )
-                    default:
-                        preconditionFailure("bestContentType chose an invalid content type.")
-                    }
-                    return .ok(.init(body: body))
-                default:
-                    return .undocumented(
-                        statusCode: response.status.code,
-                        .init(
-                            headerFields: response.headerFields,
-                            body: responseBody
-                        )
-                    )
-                }
-            }
-        )
-    }
-    /// Updates an alert re-trigger rule
-    ///
-    /// - Remark: HTTP `PUT /v1/alert_retrigger_rules/{id}`.
-    /// - Remark: Generated from `#/paths//v1/alert_retrigger_rules/{id}/put(updateAlertRetriggerRule)`.
-    public func updateAlertRetriggerRule(_ input: Operations.UpdateAlertRetriggerRule.Input) async throws -> Operations.UpdateAlertRetriggerRule.Output {
-        try await client.send(
-            input: input,
-            forOperation: Operations.UpdateAlertRetriggerRule.id,
-            serializer: { input in
-                let path = try converter.renderedPath(
-                    template: "/v1/alert_retrigger_rules/{}",
-                    parameters: [
-                        input.path.id
-                    ]
-                )
-                var request: HTTPTypes.HTTPRequest = .init(
-                    soar_path: path,
-                    method: .put
-                )
-                suppressMutabilityWarning(&request)
-                converter.setAcceptHeader(
-                    in: &request.headerFields,
-                    contentTypes: input.headers.accept
-                )
-                let body: OpenAPIRuntime.HTTPBody?
-                switch input.body {
-                case let .applicationVnd_apiJson(value):
-                    body = try converter.setRequiredRequestBodyAsJSON(
-                        value,
-                        headerFields: &request.headerFields,
-                        contentType: "application/vnd.api+json; charset=utf-8"
-                    )
-                }
-                return (request, body)
-            },
-            deserializer: { response, responseBody in
-                switch response.status.code {
-                case 200:
-                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
-                    let body: Operations.UpdateAlertRetriggerRule.Output.Ok.Body
-                    let chosenContentType = try converter.bestContentType(
-                        received: contentType,
-                        options: [
-                            "application/vnd.api+json"
-                        ]
-                    )
-                    switch chosenContentType {
-                    case "application/vnd.api+json":
-                        body = try await converter.getResponseBodyAsJSON(
-                            Components.Schemas.AlertRetriggerRuleResponse.self,
-                            from: responseBody,
-                            transforming: { value in
-                                .applicationVnd_apiJson(value)
-                            }
-                        )
-                    default:
-                        preconditionFailure("bestContentType chose an invalid content type.")
-                    }
-                    return .ok(.init(body: body))
-                default:
-                    return .undocumented(
-                        statusCode: response.status.code,
-                        .init(
-                            headerFields: response.headerFields,
-                            body: responseBody
-                        )
-                    )
-                }
-            }
-        )
-    }
-    /// Deletes an alert re-trigger rule
-    ///
-    /// - Remark: HTTP `DELETE /v1/alert_retrigger_rules/{id}`.
-    /// - Remark: Generated from `#/paths//v1/alert_retrigger_rules/{id}/delete(deleteAlertRetriggerRule)`.
-    public func deleteAlertRetriggerRule(_ input: Operations.DeleteAlertRetriggerRule.Input) async throws -> Operations.DeleteAlertRetriggerRule.Output {
-        try await client.send(
-            input: input,
-            forOperation: Operations.DeleteAlertRetriggerRule.id,
-            serializer: { input in
-                let path = try converter.renderedPath(
-                    template: "/v1/alert_retrigger_rules/{}",
-                    parameters: [
-                        input.path.id
-                    ]
-                )
-                var request: HTTPTypes.HTTPRequest = .init(
-                    soar_path: path,
-                    method: .delete
-                )
-                suppressMutabilityWarning(&request)
-                return (request, nil)
-            },
-            deserializer: { response, responseBody in
-                switch response.status.code {
-                case 200:
-                    return .ok(.init())
-                default:
-                    return .undocumented(
-                        statusCode: response.status.code,
-                        .init(
-                            headerFields: response.headerFields,
-                            body: responseBody
-                        )
-                    )
-                }
-            }
-        )
-    }
     /// List alert routes
     ///
     /// List all alert routes for the current team with filtering and pagination. **Note: This endpoint requires access to Advanced Alert Routing. If you're unsure whether you have access to this feature, please contact Rootly customer support.**
@@ -2559,7 +2454,9 @@ public struct Client: APIProtocol {
     ///
     /// For organizations with large numbers of routing rules, Rootly supports asynchronous rule processing to improve performance. When enabled, rule creation happens in the background.
     ///
-    /// **Important**: When async processing is enabled, the rules list in the API response will not be up-to-date immediately after creation. You should refetch the alert route after a few minutes to get the updated rules.
+    /// Asynchronous processing is also applied automatically, whether or not it is enabled for your organization, when a request carries a rule graph too large to save within the request timeout. Size is measured in total dependent records — rules plus their condition groups, conditions and destinations — and for an update it includes the rules already on the route, not just those in the payload.
+    ///
+    /// **Important**: Whenever rules are processed asynchronously, the rules list in the API response will not be up-to-date immediately after creation. You should refetch the alert route, or poll the async rule creation status endpoint with the `request_id` you supplied, to confirm the rules have landed.
     ///
     /// If you experience slow operations when managing alert routes with many rules, contact Rootly customer support to enable asynchronous rule processing for your organization.
     ///
@@ -2935,7 +2832,9 @@ public struct Client: APIProtocol {
     ///
     /// For organizations with large numbers of routing rules, Rootly supports asynchronous rule processing to improve performance. When enabled, rule updates happen in the background.
     ///
-    /// **Important**: When async processing is enabled, the rules list in the API response will not be up-to-date immediately after update. You should refetch the alert route after a few minutes to get the updated rules.
+    /// Asynchronous processing is also applied automatically, whether or not it is enabled for your organization, when a request carries a rule graph too large to save within the request timeout. Size is measured in total dependent records — rules plus their condition groups, conditions and destinations — and includes the rules already on the route, not just those in the payload, so a small payload against a large route may still be processed asynchronously.
+    ///
+    /// **Important**: Whenever rules are processed asynchronously, the rules list in the API response will not be up-to-date immediately after update. You should refetch the alert route, or poll the async rule creation status endpoint with the `request_id` you supplied, to confirm the rules have landed.
     ///
     /// If you experience slow operations when managing alert routes with many rules, contact Rootly customer support to enable asynchronous rule processing for your organization.
     ///
@@ -4659,28 +4558,6 @@ public struct Client: APIProtocol {
             },
             deserializer: { response, responseBody in
                 switch response.status.code {
-                case 200:
-                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
-                    let body: Operations.UpdateAlertsSource.Output.Ok.Body
-                    let chosenContentType = try converter.bestContentType(
-                        received: contentType,
-                        options: [
-                            "application/vnd.api+json"
-                        ]
-                    )
-                    switch chosenContentType {
-                    case "application/vnd.api+json":
-                        body = try await converter.getResponseBodyAsJSON(
-                            Components.Schemas.AlertsSourceResponse.self,
-                            from: responseBody,
-                            transforming: { value in
-                                .applicationVnd_apiJson(value)
-                            }
-                        )
-                    default:
-                        preconditionFailure("bestContentType chose an invalid content type.")
-                    }
-                    return .ok(.init(body: body))
                 case 404:
                     let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
                     let body: Operations.UpdateAlertsSource.Output.NotFound.Body
@@ -4703,6 +4580,50 @@ public struct Client: APIProtocol {
                         preconditionFailure("bestContentType chose an invalid content type.")
                     }
                     return .notFound(.init(body: body))
+                case 422:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.UpdateAlertsSource.Output.UnprocessableContent.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ErrorsList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .unprocessableContent(.init(body: body))
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.UpdateAlertsSource.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.AlertsSourceResponse.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
                 default:
                     return .undocumented(
                         statusCode: response.status.code,
@@ -5710,7 +5631,18 @@ public struct Client: APIProtocol {
                     in: &request.headerFields,
                     contentTypes: input.headers.accept
                 )
-                return (request, nil)
+                let body: OpenAPIRuntime.HTTPBody?
+                switch input.body {
+                case .none:
+                    body = nil
+                case let .applicationVnd_apiJson(value):
+                    body = try converter.setOptionalRequestBodyAsJSON(
+                        value,
+                        headerFields: &request.headerFields,
+                        contentType: "application/vnd.api+json; charset=utf-8"
+                    )
+                }
+                return (request, body)
             },
             deserializer: { response, responseBody in
                 switch response.status.code {
@@ -5736,6 +5668,50 @@ public struct Client: APIProtocol {
                         preconditionFailure("bestContentType chose an invalid content type.")
                     }
                     return .ok(.init(body: body))
+                case 403:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.AcknowledgeAlert.Output.Forbidden.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ErrorsList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .forbidden(.init(body: body))
+                case 422:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.AcknowledgeAlert.Output.UnprocessableContent.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ErrorsList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .unprocessableContent(.init(body: body))
                 case 404:
                     let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
                     let body: Operations.AcknowledgeAlert.Output.NotFound.Body
@@ -7698,107 +7674,6 @@ public struct Client: APIProtocol {
                         preconditionFailure("bestContentType chose an invalid content type.")
                     }
                     return .notFound(.init(body: body))
-                default:
-                    return .undocumented(
-                        statusCode: response.status.code,
-                        .init(
-                            headerFields: response.headerFields,
-                            body: responseBody
-                        )
-                    )
-                }
-            }
-        )
-    }
-    /// Create a bulk import
-    ///
-    /// Create a new bulk import for incidents. Requires global API key authentication.
-    ///
-    /// - Remark: HTTP `POST /v1/bulk_imports`.
-    /// - Remark: Generated from `#/paths//v1/bulk_imports/post(createBulkImport)`.
-    public func createBulkImport(_ input: Operations.CreateBulkImport.Input) async throws -> Operations.CreateBulkImport.Output {
-        try await client.send(
-            input: input,
-            forOperation: Operations.CreateBulkImport.id,
-            serializer: { input in
-                let path = try converter.renderedPath(
-                    template: "/v1/bulk_imports",
-                    parameters: []
-                )
-                var request: HTTPTypes.HTTPRequest = .init(
-                    soar_path: path,
-                    method: .post
-                )
-                suppressMutabilityWarning(&request)
-                let body: OpenAPIRuntime.HTTPBody?
-                switch input.body {
-                case let .applicationVnd_apiJson(value):
-                    body = try converter.setRequiredRequestBodyAsJSON(
-                        value,
-                        headerFields: &request.headerFields,
-                        contentType: "application/vnd.api+json; charset=utf-8"
-                    )
-                }
-                return (request, body)
-            },
-            deserializer: { response, responseBody in
-                switch response.status.code {
-                case 201:
-                    return .created(.init())
-                case 403:
-                    return .forbidden(.init())
-                case 422:
-                    return .unprocessableContent(.init())
-                default:
-                    return .undocumented(
-                        statusCode: response.status.code,
-                        .init(
-                            headerFields: response.headerFields,
-                            body: responseBody
-                        )
-                    )
-                }
-            }
-        )
-    }
-    /// Get bulk import status
-    ///
-    /// Retrieves the current status of a bulk import job.
-    ///
-    /// **Use this endpoint to:**
-    /// - Poll for import progress
-    /// - Check validation errors if status is `validation_failed`
-    /// - Get final results when status is `completed` or `failed`
-    ///
-    ///
-    /// - Remark: HTTP `GET /v1/bulk_imports/{id}`.
-    /// - Remark: Generated from `#/paths//v1/bulk_imports/{id}/get(getBulkImport)`.
-    public func getBulkImport(_ input: Operations.GetBulkImport.Input) async throws -> Operations.GetBulkImport.Output {
-        try await client.send(
-            input: input,
-            forOperation: Operations.GetBulkImport.id,
-            serializer: { input in
-                let path = try converter.renderedPath(
-                    template: "/v1/bulk_imports/{}",
-                    parameters: [
-                        input.path.id
-                    ]
-                )
-                var request: HTTPTypes.HTTPRequest = .init(
-                    soar_path: path,
-                    method: .get
-                )
-                suppressMutabilityWarning(&request)
-                return (request, nil)
-            },
-            deserializer: { response, responseBody in
-                switch response.status.code {
-                case 200:
-                    return .ok(.init())
-                case 404:
-                    return .notFound(.init())
-                case 403:
-                    return .forbidden(.init())
                 default:
                     return .undocumented(
                         statusCode: response.status.code,
@@ -15462,6 +15337,28 @@ public struct Client: APIProtocol {
                         preconditionFailure("bestContentType chose an invalid content type.")
                     }
                     return .created(.init(body: body))
+                case 422:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.CreateDashboardPanel.Output.UnprocessableContent.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ErrorsList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .unprocessableContent(.init(body: body))
                 case 401:
                     let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
                     let body: Operations.CreateDashboardPanel.Output.Unauthorized.Body
@@ -21161,6 +21058,28 @@ public struct Client: APIProtocol {
                         preconditionFailure("bestContentType chose an invalid content type.")
                     }
                     return .ok(.init(body: body))
+                case 422:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.DeleteFormFieldPlacement.Output.UnprocessableContent.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ErrorsList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .unprocessableContent(.init(body: body))
                 case 404:
                     let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
                     let body: Operations.DeleteFormFieldPlacement.Output.NotFound.Body
@@ -33949,7 +33868,7 @@ public struct Client: APIProtocol {
     }
     /// Update an incident retrospective
     ///
-    /// Update a specific incident retrospective by id
+    /// Update a specific incident retrospective by id. The body may be written as `content` (or its alias `smart_content`) and is sanitized to the tags the retrospective editor supports. When no `title` is sent and the body opens with an `<h1>`, that heading becomes the retrospective title, matching the editor. Once a retrospective has been opened in the collaborative editor that editor owns the body, and body writes are rejected with a 409.
     ///
     /// - Remark: HTTP `PUT /v1/post_mortems/{id}`.
     /// - Remark: Generated from `#/paths//v1/post_mortems/{id}/put(updateIncidentPostmortem)`.
@@ -34030,6 +33949,50 @@ public struct Client: APIProtocol {
                         preconditionFailure("bestContentType chose an invalid content type.")
                     }
                     return .notFound(.init(body: body))
+                case 409:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.UpdateIncidentPostmortem.Output.Conflict.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ErrorsList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .conflict(.init(body: body))
+                case 503:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.UpdateIncidentPostmortem.Output.ServiceUnavailable.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ErrorsList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .serviceUnavailable(.init(body: body))
                 default:
                     return .undocumented(
                         statusCode: response.status.code,
@@ -35646,6 +35609,28 @@ public struct Client: APIProtocol {
                         preconditionFailure("bestContentType chose an invalid content type.")
                     }
                     return .ok(.init(body: body))
+                case 422:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.UpdateIncidentStatusPage.Output.UnprocessableContent.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ErrorsList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .unprocessableContent(.init(body: body))
                 case 404:
                     let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
                     let body: Operations.UpdateIncidentStatusPage.Output.NotFound.Body
@@ -38322,6 +38307,11 @@ public struct Client: APIProtocol {
                     method: .post
                 )
                 suppressMutabilityWarning(&request)
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "Idempotency-Key",
+                    value: input.headers.idempotencyKey
+                )
                 converter.setAcceptHeader(
                     in: &request.headerFields,
                     contentTypes: input.headers.accept
@@ -38361,6 +38351,28 @@ public struct Client: APIProtocol {
                         preconditionFailure("bestContentType chose an invalid content type.")
                     }
                     return .created(.init(body: body))
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.CreateIncident.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.IncidentResponse.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
                 case 422:
                     let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
                     let body: Operations.CreateIncident.Output.UnprocessableContent.Body
@@ -44969,6 +44981,2095 @@ public struct Client: APIProtocol {
                 case 404:
                     let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
                     let body: Operations.DeletePostmortemTemplate.Output.NotFound.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ErrorsList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .notFound(.init(body: body))
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
+    /// Create a one-time token for agent enrollment
+    ///
+    /// Issue a one-time token valid for 24 hours. No request body is required. Requires Private Agent management permission plus the Private Agents and AI SRE features. The agent uses this token for gRPC Enroll; the agent record is created on enrollment, not by this request. The plaintext is returned only here and is not recoverable. Repeated requests issue distinct tokens; this endpoint is not idempotent.
+    ///
+    /// - Remark: HTTP `POST /v1/private_agents/enrollment_tokens`.
+    /// - Remark: Generated from `#/paths//v1/private_agents/enrollment_tokens/post(createPrivateAgentEnrollmentToken)`.
+    public func createPrivateAgentEnrollmentToken(_ input: Operations.CreatePrivateAgentEnrollmentToken.Input) async throws -> Operations.CreatePrivateAgentEnrollmentToken.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.CreatePrivateAgentEnrollmentToken.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/v1/private_agents/enrollment_tokens",
+                    parameters: []
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .post
+                )
+                suppressMutabilityWarning(&request)
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                return (request, nil)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 201:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.CreatePrivateAgentEnrollmentToken.Output.Created.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.PrivateAgentEnrollmentTokenResponse.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .created(.init(body: body))
+                case 401:
+                    return .unauthorized(.init())
+                case 404:
+                    return .notFound(.init())
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
+    /// List private agents
+    ///
+    /// List this tenant's agents, including revoked and offline agents. Inventory pages omit provider snapshots to bound database and response costs; use Get private agent for provider inventory and last-reported health. Requires Private Agent management access plus the Private Agents and AI SRE features. Credentials and capability schemas are never returned.
+    ///
+    /// - Remark: HTTP `GET /v1/private_agents`.
+    /// - Remark: Generated from `#/paths//v1/private_agents/get(listPrivateAgents)`.
+    public func listPrivateAgents(_ input: Operations.ListPrivateAgents.Input) async throws -> Operations.ListPrivateAgents.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.ListPrivateAgents.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/v1/private_agents",
+                    parameters: []
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .get
+                )
+                suppressMutabilityWarning(&request)
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "page[number]",
+                    value: input.query.page_lbrack_number_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "page[size]",
+                    value: input.query.page_lbrack_size_rbrack_
+                )
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                return (request, nil)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.ListPrivateAgents.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.PrivateAgentList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                case 401:
+                    return .unauthorized(.init())
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
+    /// Get private agent
+    ///
+    /// Return provider inventory and last-reported health for one agent. Requires Private Agent read permission plus the Private Agents and AI SRE features. Credentials and capability schemas are never returned.
+    ///
+    /// - Remark: HTTP `GET /v1/private_agents/{id}`.
+    /// - Remark: Generated from `#/paths//v1/private_agents/{id}/get(getPrivateAgent)`.
+    public func getPrivateAgent(_ input: Operations.GetPrivateAgent.Input) async throws -> Operations.GetPrivateAgent.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.GetPrivateAgent.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/v1/private_agents/{}",
+                    parameters: [
+                        input.path.id
+                    ]
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .get
+                )
+                suppressMutabilityWarning(&request)
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                return (request, nil)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.GetPrivateAgent.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.PrivateAgentResponse.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                case 404:
+                    return .notFound(.init())
+                case 401:
+                    return .unauthorized(.init())
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
+    /// Update private agent metadata
+    ///
+    /// Update routing metadata or pause tool execution without disconnecting the agent. The agent UUID and provider IDs remain the execution identities. Requires Private Agent update permission.
+    ///
+    /// - Remark: HTTP `PATCH /v1/private_agents/{id}`.
+    /// - Remark: Generated from `#/paths//v1/private_agents/{id}/patch(updatePrivateAgent)`.
+    public func updatePrivateAgent(_ input: Operations.UpdatePrivateAgent.Input) async throws -> Operations.UpdatePrivateAgent.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.UpdatePrivateAgent.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/v1/private_agents/{}",
+                    parameters: [
+                        input.path.id
+                    ]
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .patch
+                )
+                suppressMutabilityWarning(&request)
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                let body: OpenAPIRuntime.HTTPBody?
+                switch input.body {
+                case let .applicationVnd_apiJson(value):
+                    body = try converter.setRequiredRequestBodyAsJSON(
+                        value,
+                        headerFields: &request.headerFields,
+                        contentType: "application/vnd.api+json; charset=utf-8"
+                    )
+                }
+                return (request, body)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 204:
+                    return .noContent(.init())
+                case 422:
+                    return .unprocessableContent(.init())
+                case 409:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.UpdatePrivateAgent.Output.Conflict.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ErrorsList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .conflict(.init(body: body))
+                case 404:
+                    return .notFound(.init())
+                case 401:
+                    return .unauthorized(.init())
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
+    /// Revoke private agent
+    ///
+    /// Invalidate access and refresh credentials and remove provider routing registrations. Requires Private Agent delete permission plus the Private Agents and AI SRE features. Retains the agent and invocation history. Repeated revocation is safe. An executing customer-side operation is not guaranteed to stop immediately. Use a new enrollment token to re-enroll a revoked installation.
+    ///
+    /// - Remark: HTTP `POST /v1/private_agents/{id}/revoke`.
+    /// - Remark: Generated from `#/paths//v1/private_agents/{id}/revoke/post(revokePrivateAgent)`.
+    public func revokePrivateAgent(_ input: Operations.RevokePrivateAgent.Input) async throws -> Operations.RevokePrivateAgent.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.RevokePrivateAgent.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/v1/private_agents/{}/revoke",
+                    parameters: [
+                        input.path.id
+                    ]
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .post
+                )
+                suppressMutabilityWarning(&request)
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                return (request, nil)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.RevokePrivateAgent.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.PrivateAgentResponse.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                case 404:
+                    return .notFound(.init())
+                case 401:
+                    return .unauthorized(.init())
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
+    /// List a problem's action items
+    ///
+    /// List action items belonging to a problem, with filter, sort and pagination support
+    ///
+    /// - Remark: HTTP `GET /v1/problems/{problem_id}/action_items`.
+    /// - Remark: Generated from `#/paths//v1/problems/{problem_id}/action_items/get(listProblemActionItems)`.
+    public func listProblemActionItems(_ input: Operations.ListProblemActionItems.Input) async throws -> Operations.ListProblemActionItems.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.ListProblemActionItems.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/v1/problems/{}/action_items",
+                    parameters: [
+                        input.path.problemId
+                    ]
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .get
+                )
+                suppressMutabilityWarning(&request)
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "page[number]",
+                    value: input.query.page_lbrack_number_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "page[size]",
+                    value: input.query.page_lbrack_size_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "sort",
+                    value: input.query.sort
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[search]",
+                    value: input.query.filter_lbrack_search_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[due_date][gt]",
+                    value: input.query.filter_lbrack_dueDate_rbrack__lbrack_gt_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[due_date][gte]",
+                    value: input.query.filter_lbrack_dueDate_rbrack__lbrack_gte_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[due_date][lt]",
+                    value: input.query.filter_lbrack_dueDate_rbrack__lbrack_lt_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[due_date][lte]",
+                    value: input.query.filter_lbrack_dueDate_rbrack__lbrack_lte_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[created_at][gt]",
+                    value: input.query.filter_lbrack_createdAt_rbrack__lbrack_gt_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[created_at][gte]",
+                    value: input.query.filter_lbrack_createdAt_rbrack__lbrack_gte_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[created_at][lt]",
+                    value: input.query.filter_lbrack_createdAt_rbrack__lbrack_lt_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[created_at][lte]",
+                    value: input.query.filter_lbrack_createdAt_rbrack__lbrack_lte_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[status][eq]",
+                    value: input.query.filter_lbrack_status_rbrack__lbrack_eq_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[status][not_eq]",
+                    value: input.query.filter_lbrack_status_rbrack__lbrack_notEq_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[status][in]",
+                    value: input.query.filter_lbrack_status_rbrack__lbrack_in_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[status][not_in]",
+                    value: input.query.filter_lbrack_status_rbrack__lbrack_notIn_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[priority][eq]",
+                    value: input.query.filter_lbrack_priority_rbrack__lbrack_eq_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[priority][not_eq]",
+                    value: input.query.filter_lbrack_priority_rbrack__lbrack_notEq_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[priority][in]",
+                    value: input.query.filter_lbrack_priority_rbrack__lbrack_in_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[priority][not_in]",
+                    value: input.query.filter_lbrack_priority_rbrack__lbrack_notIn_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[assigned_to_user_id][eq]",
+                    value: input.query.filter_lbrack_assignedToUserId_rbrack__lbrack_eq_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[assigned_to_user_id][not_eq]",
+                    value: input.query.filter_lbrack_assignedToUserId_rbrack__lbrack_notEq_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[assigned_to_user_id][in]",
+                    value: input.query.filter_lbrack_assignedToUserId_rbrack__lbrack_in_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[assigned_to_user_id][not_in]",
+                    value: input.query.filter_lbrack_assignedToUserId_rbrack__lbrack_notIn_rbrack_
+                )
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                return (request, nil)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.ListProblemActionItems.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ProblemActionItemList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
+    /// Creates a problem action item
+    ///
+    /// Creates a new action item on a problem from provided data
+    ///
+    /// - Remark: HTTP `POST /v1/problems/{problem_id}/action_items`.
+    /// - Remark: Generated from `#/paths//v1/problems/{problem_id}/action_items/post(createProblemActionItem)`.
+    public func createProblemActionItem(_ input: Operations.CreateProblemActionItem.Input) async throws -> Operations.CreateProblemActionItem.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.CreateProblemActionItem.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/v1/problems/{}/action_items",
+                    parameters: [
+                        input.path.problemId
+                    ]
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .post
+                )
+                suppressMutabilityWarning(&request)
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                let body: OpenAPIRuntime.HTTPBody?
+                switch input.body {
+                case let .applicationVnd_apiJson(value):
+                    body = try converter.setRequiredRequestBodyAsJSON(
+                        value,
+                        headerFields: &request.headerFields,
+                        contentType: "application/vnd.api+json; charset=utf-8"
+                    )
+                }
+                return (request, body)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 201:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.CreateProblemActionItem.Output.Created.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ProblemActionItemResponse.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .created(.init(body: body))
+                case 422:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.CreateProblemActionItem.Output.UnprocessableContent.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ErrorsList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .unprocessableContent(.init(body: body))
+                case 401:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.CreateProblemActionItem.Output.Unauthorized.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ErrorsList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .unauthorized(.init(body: body))
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
+    /// Retrieves a problem action item
+    ///
+    /// Retrieves a specific problem action item by id
+    ///
+    /// - Remark: HTTP `GET /v1/problem_action_items/{id}`.
+    /// - Remark: Generated from `#/paths//v1/problem_action_items/{id}/get(getProblemActionItem)`.
+    public func getProblemActionItem(_ input: Operations.GetProblemActionItem.Input) async throws -> Operations.GetProblemActionItem.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.GetProblemActionItem.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/v1/problem_action_items/{}",
+                    parameters: [
+                        input.path.id
+                    ]
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .get
+                )
+                suppressMutabilityWarning(&request)
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                return (request, nil)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.GetProblemActionItem.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ProblemActionItemResponse.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                case 404:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.GetProblemActionItem.Output.NotFound.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ErrorsList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .notFound(.init(body: body))
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
+    /// Update a problem action item
+    ///
+    /// Updates a problem action item
+    ///
+    /// - Remark: HTTP `PUT /v1/problem_action_items/{id}`.
+    /// - Remark: Generated from `#/paths//v1/problem_action_items/{id}/put(updateProblemActionItem)`.
+    public func updateProblemActionItem(_ input: Operations.UpdateProblemActionItem.Input) async throws -> Operations.UpdateProblemActionItem.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.UpdateProblemActionItem.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/v1/problem_action_items/{}",
+                    parameters: [
+                        input.path.id
+                    ]
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .put
+                )
+                suppressMutabilityWarning(&request)
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                let body: OpenAPIRuntime.HTTPBody?
+                switch input.body {
+                case let .applicationVnd_apiJson(value):
+                    body = try converter.setRequiredRequestBodyAsJSON(
+                        value,
+                        headerFields: &request.headerFields,
+                        contentType: "application/vnd.api+json; charset=utf-8"
+                    )
+                }
+                return (request, body)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.UpdateProblemActionItem.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ProblemActionItemResponse.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
+    /// Deletes a problem action item
+    ///
+    /// Deletes a problem action item
+    ///
+    /// - Remark: HTTP `DELETE /v1/problem_action_items/{id}`.
+    /// - Remark: Generated from `#/paths//v1/problem_action_items/{id}/delete(deleteProblemActionItem)`.
+    public func deleteProblemActionItem(_ input: Operations.DeleteProblemActionItem.Input) async throws -> Operations.DeleteProblemActionItem.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.DeleteProblemActionItem.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/v1/problem_action_items/{}",
+                    parameters: [
+                        input.path.id
+                    ]
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .delete
+                )
+                suppressMutabilityWarning(&request)
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                return (request, nil)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.DeleteProblemActionItem.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ProblemActionItemResponse.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                case 404:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.DeleteProblemActionItem.Output.NotFound.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ErrorsList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .notFound(.init(body: body))
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
+    /// List all problem action items
+    ///
+    /// List all problem action items the caller can access across the team, with filter, sort and pagination support
+    ///
+    /// - Remark: HTTP `GET /v1/problem_action_items`.
+    /// - Remark: Generated from `#/paths//v1/problem_action_items/get(listAllProblemActionItems)`.
+    public func listAllProblemActionItems(_ input: Operations.ListAllProblemActionItems.Input) async throws -> Operations.ListAllProblemActionItems.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.ListAllProblemActionItems.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/v1/problem_action_items",
+                    parameters: []
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .get
+                )
+                suppressMutabilityWarning(&request)
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "page[number]",
+                    value: input.query.page_lbrack_number_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "page[size]",
+                    value: input.query.page_lbrack_size_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "sort",
+                    value: input.query.sort
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "problem_id",
+                    value: input.query.problemId
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[search]",
+                    value: input.query.filter_lbrack_search_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[due_date][gt]",
+                    value: input.query.filter_lbrack_dueDate_rbrack__lbrack_gt_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[due_date][gte]",
+                    value: input.query.filter_lbrack_dueDate_rbrack__lbrack_gte_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[due_date][lt]",
+                    value: input.query.filter_lbrack_dueDate_rbrack__lbrack_lt_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[due_date][lte]",
+                    value: input.query.filter_lbrack_dueDate_rbrack__lbrack_lte_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[created_at][gt]",
+                    value: input.query.filter_lbrack_createdAt_rbrack__lbrack_gt_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[created_at][gte]",
+                    value: input.query.filter_lbrack_createdAt_rbrack__lbrack_gte_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[created_at][lt]",
+                    value: input.query.filter_lbrack_createdAt_rbrack__lbrack_lt_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[created_at][lte]",
+                    value: input.query.filter_lbrack_createdAt_rbrack__lbrack_lte_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[status][eq]",
+                    value: input.query.filter_lbrack_status_rbrack__lbrack_eq_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[status][not_eq]",
+                    value: input.query.filter_lbrack_status_rbrack__lbrack_notEq_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[status][in]",
+                    value: input.query.filter_lbrack_status_rbrack__lbrack_in_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[status][not_in]",
+                    value: input.query.filter_lbrack_status_rbrack__lbrack_notIn_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[priority][eq]",
+                    value: input.query.filter_lbrack_priority_rbrack__lbrack_eq_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[priority][not_eq]",
+                    value: input.query.filter_lbrack_priority_rbrack__lbrack_notEq_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[priority][in]",
+                    value: input.query.filter_lbrack_priority_rbrack__lbrack_in_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[priority][not_in]",
+                    value: input.query.filter_lbrack_priority_rbrack__lbrack_notIn_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[assigned_to_user_id][eq]",
+                    value: input.query.filter_lbrack_assignedToUserId_rbrack__lbrack_eq_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[assigned_to_user_id][not_eq]",
+                    value: input.query.filter_lbrack_assignedToUserId_rbrack__lbrack_notEq_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[assigned_to_user_id][in]",
+                    value: input.query.filter_lbrack_assignedToUserId_rbrack__lbrack_in_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[assigned_to_user_id][not_in]",
+                    value: input.query.filter_lbrack_assignedToUserId_rbrack__lbrack_notIn_rbrack_
+                )
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                return (request, nil)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.ListAllProblemActionItems.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ProblemActionItemList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                case 404:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.ListAllProblemActionItems.Output.NotFound.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ErrorsList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .notFound(.init(body: body))
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
+    /// List problems
+    ///
+    /// Sorting by incidents_count would let callers without incident read infer relative hidden incident counts, so it is rejected.
+    ///
+    /// - Remark: HTTP `GET /v1/problems`.
+    /// - Remark: Generated from `#/paths//v1/problems/get(listProblems)`.
+    public func listProblems(_ input: Operations.ListProblems.Input) async throws -> Operations.ListProblems.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.ListProblems.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/v1/problems",
+                    parameters: []
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .get
+                )
+                suppressMutabilityWarning(&request)
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "page[number]",
+                    value: input.query.page_lbrack_number_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "page[size]",
+                    value: input.query.page_lbrack_size_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "sort",
+                    value: input.query.sort
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[search]",
+                    value: input.query.filter_lbrack_search_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[owner_user_id]",
+                    value: input.query.filter_lbrack_ownerUserId_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[owner_group_id]",
+                    value: input.query.filter_lbrack_ownerGroupId_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[created_by_user_id]",
+                    value: input.query.filter_lbrack_createdByUserId_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[created_at][gt]",
+                    value: input.query.filter_lbrack_createdAt_rbrack__lbrack_gt_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[created_at][gte]",
+                    value: input.query.filter_lbrack_createdAt_rbrack__lbrack_gte_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[created_at][lt]",
+                    value: input.query.filter_lbrack_createdAt_rbrack__lbrack_lt_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[created_at][lte]",
+                    value: input.query.filter_lbrack_createdAt_rbrack__lbrack_lte_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[due_date][gt]",
+                    value: input.query.filter_lbrack_dueDate_rbrack__lbrack_gt_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[due_date][gte]",
+                    value: input.query.filter_lbrack_dueDate_rbrack__lbrack_gte_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[due_date][lt]",
+                    value: input.query.filter_lbrack_dueDate_rbrack__lbrack_lt_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[due_date][lte]",
+                    value: input.query.filter_lbrack_dueDate_rbrack__lbrack_lte_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[status][eq]",
+                    value: input.query.filter_lbrack_status_rbrack__lbrack_eq_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[status][not_eq]",
+                    value: input.query.filter_lbrack_status_rbrack__lbrack_notEq_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[status][in]",
+                    value: input.query.filter_lbrack_status_rbrack__lbrack_in_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[status][not_in]",
+                    value: input.query.filter_lbrack_status_rbrack__lbrack_notIn_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[priority][eq]",
+                    value: input.query.filter_lbrack_priority_rbrack__lbrack_eq_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[priority][not_eq]",
+                    value: input.query.filter_lbrack_priority_rbrack__lbrack_notEq_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[priority][in]",
+                    value: input.query.filter_lbrack_priority_rbrack__lbrack_in_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "filter[priority][not_in]",
+                    value: input.query.filter_lbrack_priority_rbrack__lbrack_notIn_rbrack_
+                )
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                return (request, nil)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.ListProblems.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ProblemList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                case 400:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.ListProblems.Output.BadRequest.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ErrorsList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .badRequest(.init(body: body))
+                case 404:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.ListProblems.Output.NotFound.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ErrorsList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .notFound(.init(body: body))
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
+    /// Creates a problem
+    ///
+    /// Creates a new problem from provided data
+    ///
+    /// - Remark: HTTP `POST /v1/problems`.
+    /// - Remark: Generated from `#/paths//v1/problems/post(createProblem)`.
+    public func createProblem(_ input: Operations.CreateProblem.Input) async throws -> Operations.CreateProblem.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.CreateProblem.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/v1/problems",
+                    parameters: []
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .post
+                )
+                suppressMutabilityWarning(&request)
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                let body: OpenAPIRuntime.HTTPBody?
+                switch input.body {
+                case let .applicationVnd_apiJson(value):
+                    body = try converter.setRequiredRequestBodyAsJSON(
+                        value,
+                        headerFields: &request.headerFields,
+                        contentType: "application/vnd.api+json; charset=utf-8"
+                    )
+                }
+                return (request, body)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 201:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.CreateProblem.Output.Created.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ProblemResponse.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .created(.init(body: body))
+                case 422:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.CreateProblem.Output.UnprocessableContent.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ErrorsList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .unprocessableContent(.init(body: body))
+                case 401:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.CreateProblem.Output.Unauthorized.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ErrorsList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .unauthorized(.init(body: body))
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
+    /// Retrieves a problem
+    ///
+    /// API callers lacking access to the problem's team receive an error. The API deliberately returns 404 rather than 403 so existence is not leaked.
+    ///
+    /// - Remark: HTTP `GET /v1/problems/{id}`.
+    /// - Remark: Generated from `#/paths//v1/problems/{id}/get(getProblem)`.
+    public func getProblem(_ input: Operations.GetProblem.Input) async throws -> Operations.GetProblem.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.GetProblem.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/v1/problems/{}",
+                    parameters: [
+                        input.path.id
+                    ]
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .get
+                )
+                suppressMutabilityWarning(&request)
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                return (request, nil)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.GetProblem.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ProblemResponse.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                case 404:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.GetProblem.Output.NotFound.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ErrorsList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .notFound(.init(body: body))
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
+    /// Update a problem
+    ///
+    /// When a status transition fails validation, accompanying field updates roll back with it.
+    ///
+    /// - Remark: HTTP `PUT /v1/problems/{id}`.
+    /// - Remark: Generated from `#/paths//v1/problems/{id}/put(updateProblem)`.
+    public func updateProblem(_ input: Operations.UpdateProblem.Input) async throws -> Operations.UpdateProblem.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.UpdateProblem.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/v1/problems/{}",
+                    parameters: [
+                        input.path.id
+                    ]
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .put
+                )
+                suppressMutabilityWarning(&request)
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                let body: OpenAPIRuntime.HTTPBody?
+                switch input.body {
+                case let .applicationVnd_apiJson(value):
+                    body = try converter.setRequiredRequestBodyAsJSON(
+                        value,
+                        headerFields: &request.headerFields,
+                        contentType: "application/vnd.api+json; charset=utf-8"
+                    )
+                }
+                return (request, body)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.UpdateProblem.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ProblemResponse.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                case 422:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.UpdateProblem.Output.UnprocessableContent.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ErrorsList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .unprocessableContent(.init(body: body))
+                case 404:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.UpdateProblem.Output.NotFound.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ErrorsList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .notFound(.init(body: body))
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
+    /// Deletes a problem
+    ///
+    /// Soft-deletes a problem
+    ///
+    /// - Remark: HTTP `DELETE /v1/problems/{id}`.
+    /// - Remark: Generated from `#/paths//v1/problems/{id}/delete(deleteProblem)`.
+    public func deleteProblem(_ input: Operations.DeleteProblem.Input) async throws -> Operations.DeleteProblem.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.DeleteProblem.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/v1/problems/{}",
+                    parameters: [
+                        input.path.id
+                    ]
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .delete
+                )
+                suppressMutabilityWarning(&request)
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                return (request, nil)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.DeleteProblem.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ProblemResponse.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                case 404:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.DeleteProblem.Output.NotFound.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ErrorsList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .notFound(.init(body: body))
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
+    /// Links incidents to a problem
+    ///
+    /// Links one or more incidents to a problem. Accepts `incident_id` (single) or `incident_ids` (array).
+    ///
+    /// - Remark: HTTP `POST /v1/problems/{id}/incidents`.
+    /// - Remark: Generated from `#/paths//v1/problems/{id}/incidents/post(linkProblemIncidents)`.
+    public func linkProblemIncidents(_ input: Operations.LinkProblemIncidents.Input) async throws -> Operations.LinkProblemIncidents.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.LinkProblemIncidents.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/v1/problems/{}/incidents",
+                    parameters: [
+                        input.path.id
+                    ]
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .post
+                )
+                suppressMutabilityWarning(&request)
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                let body: OpenAPIRuntime.HTTPBody?
+                switch input.body {
+                case let .applicationVnd_apiJson(value):
+                    body = try converter.setRequiredRequestBodyAsJSON(
+                        value,
+                        headerFields: &request.headerFields,
+                        contentType: "application/vnd.api+json; charset=utf-8"
+                    )
+                }
+                return (request, body)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.LinkProblemIncidents.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ProblemResponse.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                case 400:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.LinkProblemIncidents.Output.BadRequest.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ErrorsList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .badRequest(.init(body: body))
+                case 404:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.LinkProblemIncidents.Output.NotFound.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ErrorsList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .notFound(.init(body: body))
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
+    /// Unlinks an incident from a problem
+    ///
+    /// Unlinks an incident from a problem
+    ///
+    /// - Remark: HTTP `DELETE /v1/problems/{id}/incidents/{incident_id}`.
+    /// - Remark: Generated from `#/paths//v1/problems/{id}/incidents/{incident_id}/delete(unlinkProblemIncident)`.
+    public func unlinkProblemIncident(_ input: Operations.UnlinkProblemIncident.Input) async throws -> Operations.UnlinkProblemIncident.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.UnlinkProblemIncident.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/v1/problems/{}/incidents/{}",
+                    parameters: [
+                        input.path.id,
+                        input.path.incidentId
+                    ]
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .delete
+                )
+                suppressMutabilityWarning(&request)
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                return (request, nil)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.UnlinkProblemIncident.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ProblemResponse.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                case 404:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.UnlinkProblemIncident.Output.NotFound.Body
                     let chosenContentType = try converter.bestContentType(
                         received: contentType,
                         options: [
@@ -52946,7 +55047,7 @@ public struct Client: APIProtocol {
     }
     /// creates shift coverage requests
     ///
-    /// Creates coverage requests for the shifts overlapping the requested time range. A range can span multiple consecutive shifts (e.g. across a handoff), so one or more coverage requests may be created; the response is always a list. A coverage request broadcasts to schedule members so someone can volunteer to cover the shift.
+    /// Creates coverage requests for the shifts overlapping the requested time range. A range can span multiple consecutive shifts (e.g. across a handoff), so one or more coverage requests may be created; the response is always a list. A coverage request broadcasts to schedule members so someone can volunteer to cover the shift, or targets recipient_user_ids when targeted-shift-coverage is enabled.
     ///
     /// - Remark: HTTP `POST /v1/schedules/{schedule_id}/shift_coverage_requests`.
     /// - Remark: Generated from `#/paths//v1/schedules/{schedule_id}/shift_coverage_requests/post(createShiftCoverageRequest)`.
@@ -55199,6 +57300,500 @@ public struct Client: APIProtocol {
             }
         )
     }
+    /// Lists the teams with access to a status page
+    ///
+    /// Lists the teams assigned to a status page, oldest first
+    ///
+    /// - Remark: HTTP `GET /v1/status-pages/{status_page_id}/teams`.
+    /// - Remark: Generated from `#/paths//v1/status-pages/{status_page_id}/teams/get(listStatusPageTeams)`.
+    public func listStatusPageTeams(_ input: Operations.ListStatusPageTeams.Input) async throws -> Operations.ListStatusPageTeams.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.ListStatusPageTeams.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/v1/status-pages/{}/teams",
+                    parameters: [
+                        input.path.statusPageId
+                    ]
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .get
+                )
+                suppressMutabilityWarning(&request)
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "include",
+                    value: input.query.include
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "page[number]",
+                    value: input.query.page_lbrack_number_rbrack_
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "page[size]",
+                    value: input.query.page_lbrack_size_rbrack_
+                )
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                return (request, nil)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.ListStatusPageTeams.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.StatusPageTeamList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
+    /// Grants a team access to a status page
+    ///
+    /// Assigns a team to a status page. Members of the team get the chosen permission level on that page in addition to their role. Requires an owner or admin role.
+    ///
+    /// - Remark: HTTP `POST /v1/status-pages/{status_page_id}/teams`.
+    /// - Remark: Generated from `#/paths//v1/status-pages/{status_page_id}/teams/post(createStatusPageTeam)`.
+    public func createStatusPageTeam(_ input: Operations.CreateStatusPageTeam.Input) async throws -> Operations.CreateStatusPageTeam.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.CreateStatusPageTeam.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/v1/status-pages/{}/teams",
+                    parameters: [
+                        input.path.statusPageId
+                    ]
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .post
+                )
+                suppressMutabilityWarning(&request)
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                let body: OpenAPIRuntime.HTTPBody?
+                switch input.body {
+                case let .applicationVnd_apiJson(value):
+                    body = try converter.setRequiredRequestBodyAsJSON(
+                        value,
+                        headerFields: &request.headerFields,
+                        contentType: "application/vnd.api+json; charset=utf-8"
+                    )
+                }
+                return (request, body)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 201:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.CreateStatusPageTeam.Output.Created.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.StatusPageTeamResponse.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .created(.init(body: body))
+                case 422:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.CreateStatusPageTeam.Output.UnprocessableContent.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ErrorsList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .unprocessableContent(.init(body: body))
+                case 404:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.CreateStatusPageTeam.Output.NotFound.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ErrorsList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .notFound(.init(body: body))
+                case 401:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.CreateStatusPageTeam.Output.Unauthorized.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ErrorsList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .unauthorized(.init(body: body))
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
+    /// Retrieves a status page team assignment
+    ///
+    /// Retrieves a specific status page team assignment by id
+    ///
+    /// - Remark: HTTP `GET /v1/status-pages/{status_page_id}/teams/{id}`.
+    /// - Remark: Generated from `#/paths//v1/status-pages/{status_page_id}/teams/{id}/get(getStatusPageTeam)`.
+    public func getStatusPageTeam(_ input: Operations.GetStatusPageTeam.Input) async throws -> Operations.GetStatusPageTeam.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.GetStatusPageTeam.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/v1/status-pages/{}/teams/{}",
+                    parameters: [
+                        input.path.statusPageId,
+                        input.path.id
+                    ]
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .get
+                )
+                suppressMutabilityWarning(&request)
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                return (request, nil)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.GetStatusPageTeam.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.StatusPageTeamResponse.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                case 404:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.GetStatusPageTeam.Output.NotFound.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ErrorsList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .notFound(.init(body: body))
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
+    /// Updates a status page team assignment
+    ///
+    /// Changes the permission level of a team on a status page. Requires an owner or admin role. To move the grant to another team, delete it and create a new one.
+    ///
+    /// - Remark: HTTP `PUT /v1/status-pages/{status_page_id}/teams/{id}`.
+    /// - Remark: Generated from `#/paths//v1/status-pages/{status_page_id}/teams/{id}/put(updateStatusPageTeam)`.
+    public func updateStatusPageTeam(_ input: Operations.UpdateStatusPageTeam.Input) async throws -> Operations.UpdateStatusPageTeam.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.UpdateStatusPageTeam.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/v1/status-pages/{}/teams/{}",
+                    parameters: [
+                        input.path.statusPageId,
+                        input.path.id
+                    ]
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .put
+                )
+                suppressMutabilityWarning(&request)
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                let body: OpenAPIRuntime.HTTPBody?
+                switch input.body {
+                case let .applicationVnd_apiJson(value):
+                    body = try converter.setRequiredRequestBodyAsJSON(
+                        value,
+                        headerFields: &request.headerFields,
+                        contentType: "application/vnd.api+json; charset=utf-8"
+                    )
+                }
+                return (request, body)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.UpdateStatusPageTeam.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.StatusPageTeamResponse.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                case 404:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.UpdateStatusPageTeam.Output.NotFound.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ErrorsList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .notFound(.init(body: body))
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
+    /// Removes a team's access to a status page
+    ///
+    /// Removes a team from a status page. Its members lose the page access the assignment granted on their next request. Requires an owner or admin role.
+    ///
+    /// - Remark: HTTP `DELETE /v1/status-pages/{status_page_id}/teams/{id}`.
+    /// - Remark: Generated from `#/paths//v1/status-pages/{status_page_id}/teams/{id}/delete(deleteStatusPageTeam)`.
+    public func deleteStatusPageTeam(_ input: Operations.DeleteStatusPageTeam.Input) async throws -> Operations.DeleteStatusPageTeam.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.DeleteStatusPageTeam.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/v1/status-pages/{}/teams/{}",
+                    parameters: [
+                        input.path.statusPageId,
+                        input.path.id
+                    ]
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .delete
+                )
+                suppressMutabilityWarning(&request)
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                return (request, nil)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.DeleteStatusPageTeam.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.StatusPageTeamResponse.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                case 404:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.DeleteStatusPageTeam.Output.NotFound.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ErrorsList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .notFound(.init(body: body))
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
     /// List status page templates
     ///
     /// List status page templates
@@ -57408,6 +60003,28 @@ public struct Client: APIProtocol {
                         preconditionFailure("bestContentType chose an invalid content type.")
                     }
                     return .created(.init(body: body))
+                case 403:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.CreateTeam.Output.Forbidden.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ErrorsList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .forbidden(.init(body: body))
                 case 422:
                     let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
                     let body: Operations.CreateTeam.Output.UnprocessableContent.Body
@@ -57618,6 +60235,28 @@ public struct Client: APIProtocol {
                         preconditionFailure("bestContentType chose an invalid content type.")
                     }
                     return .ok(.init(body: body))
+                case 403:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.UpdateTeam.Output.Forbidden.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ErrorsList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .forbidden(.init(body: body))
                 case 404:
                     let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
                     let body: Operations.UpdateTeam.Output.NotFound.Body
@@ -58144,6 +60783,28 @@ public struct Client: APIProtocol {
                         preconditionFailure("bestContentType chose an invalid content type.")
                     }
                     return .ok(.init(body: body))
+                case 403:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.BulkUpsertGroups.Output.Forbidden.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/vnd.api+json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/vnd.api+json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ErrorsList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .applicationVnd_apiJson(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .forbidden(.init(body: body))
                 case 422:
                     let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
                     let body: Operations.BulkUpsertGroups.Output.UnprocessableContent.Body
@@ -60228,6 +62889,216 @@ public struct Client: APIProtocol {
                         preconditionFailure("bestContentType chose an invalid content type.")
                     }
                     return .unprocessableContent(.init(body: body))
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
+    /// Send verification code
+    ///
+    /// Sends a verification code to the phone number. SMS sends are limited per recipient to 3 per hour and 5 per day. An application rate-limit 429 response includes Retry-After with the remaining wait in seconds.
+    ///
+    /// - Remark: HTTP `POST /v1/phone_numbers/{id}/verify`.
+    /// - Remark: Generated from `#/paths//v1/phone_numbers/{id}/verify/post(verifyUserPhoneNumber)`.
+    public func verifyUserPhoneNumber(_ input: Operations.VerifyUserPhoneNumber.Input) async throws -> Operations.VerifyUserPhoneNumber.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.VerifyUserPhoneNumber.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/v1/phone_numbers/{}/verify",
+                    parameters: [
+                        input.path.id
+                    ]
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .post
+                )
+                suppressMutabilityWarning(&request)
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                return (request, nil)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.VerifyUserPhoneNumber.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Operations.VerifyUserPhoneNumber.Output.Ok.Body.JsonPayload.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .json(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                case 429:
+                    let headers: Operations.VerifyUserPhoneNumber.Output.TooManyRequests.Headers = .init(retryAfter: try converter.getOptionalHeaderFieldAsURI(
+                        in: response.headerFields,
+                        name: "Retry-After",
+                        as: Swift.Int.self
+                    ))
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.VerifyUserPhoneNumber.Output.TooManyRequests.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Operations.VerifyUserPhoneNumber.Output.TooManyRequests.Body.JsonPayload.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .json(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .tooManyRequests(.init(
+                        headers: headers,
+                        body: body
+                    ))
+                case 503:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.VerifyUserPhoneNumber.Output.ServiceUnavailable.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Operations.VerifyUserPhoneNumber.Output.ServiceUnavailable.Body.JsonPayload.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .json(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .serviceUnavailable(.init(body: body))
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
+    /// Resend verification code
+    ///
+    /// Resends a verification code to the phone number. SMS sends are limited per recipient to 3 per hour and 5 per day. An application rate-limit 429 response includes Retry-After with the remaining wait in seconds.
+    ///
+    /// - Remark: HTTP `POST /v1/phone_numbers/{id}/resend_verification`.
+    /// - Remark: Generated from `#/paths//v1/phone_numbers/{id}/resend_verification/post(resendVerificationUserPhoneNumber)`.
+    public func resendVerificationUserPhoneNumber(_ input: Operations.ResendVerificationUserPhoneNumber.Input) async throws -> Operations.ResendVerificationUserPhoneNumber.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.ResendVerificationUserPhoneNumber.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/v1/phone_numbers/{}/resend_verification",
+                    parameters: [
+                        input.path.id
+                    ]
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .post
+                )
+                suppressMutabilityWarning(&request)
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                return (request, nil)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.ResendVerificationUserPhoneNumber.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Operations.ResendVerificationUserPhoneNumber.Output.Ok.Body.JsonPayload.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .json(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                case 429:
+                    let headers: Operations.ResendVerificationUserPhoneNumber.Output.TooManyRequests.Headers = .init(retryAfter: try converter.getOptionalHeaderFieldAsURI(
+                        in: response.headerFields,
+                        name: "Retry-After",
+                        as: Swift.Int.self
+                    ))
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.ResendVerificationUserPhoneNumber.Output.TooManyRequests.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Operations.ResendVerificationUserPhoneNumber.Output.TooManyRequests.Body.JsonPayload.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .json(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .tooManyRequests(.init(
+                        headers: headers,
+                        body: body
+                    ))
                 default:
                     return .undocumented(
                         statusCode: response.status.code,
