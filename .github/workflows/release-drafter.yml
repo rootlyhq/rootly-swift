@@ -1,0 +1,130 @@
+name: Release Drafter
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  update-release-draft:
+    permissions:
+      contents: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Install oasdiff
+        env:
+          OASDIFF_VERSION: 1.26.1
+        run: |
+          curl -fsSL -o /tmp/oasdiff.tar.gz \
+            "https://github.com/oasdiff/oasdiff/releases/download/v${OASDIFF_VERSION}/oasdiff_${OASDIFF_VERSION}_linux_amd64.tar.gz"
+          tar -xzf /tmp/oasdiff.tar.gz -C /usr/local/bin oasdiff
+
+      - name: Generate OpenAPI diff since last release
+        run: |
+          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          if [ -z "$LATEST_TAG" ]; then
+            SUMMARY="_No previous release tag found._"
+            echo "OPENAPI_HAS_CHANGES=false" >> "$GITHUB_ENV"
+          elif git show "${LATEST_TAG}:Sources/Rootly/openapi.json" > /tmp/base-openapi.json 2>/dev/null; then
+            CHANGELOG=$(oasdiff changelog --format markdown /tmp/base-openapi.json Sources/Rootly/openapi.json || true)
+            if [ -z "$CHANGELOG" ] || echo "$CHANGELOG" | grep -q "No changes detected"; then
+              SUMMARY="_No API changes detected._"
+              echo "OPENAPI_HAS_CHANGES=false" >> "$GITHUB_ENV"
+            else
+              CHANGE_COUNT=$(echo "$CHANGELOG" | grep -c '^- ' || true)
+              BREAKING_OUTPUT=$(oasdiff breaking --format text /tmp/base-openapi.json Sources/Rootly/openapi.json 2>/dev/null || true)
+              BREAKING_COUNT=$(echo "$BREAKING_OUTPUT" | grep -c '^error' || true)
+              WARNING_COUNT=$(echo "$BREAKING_OUTPUT" | grep -c '^warning' || true)
+              COUNTS="${CHANGE_COUNT} API change(s)"
+              if [ "$BREAKING_COUNT" -gt 0 ] && [ "$WARNING_COUNT" -gt 0 ]; then
+                COUNTS="${COUNTS} (${BREAKING_COUNT} breaking, ${WARNING_COUNT} potentially breaking)"
+              elif [ "$BREAKING_COUNT" -gt 0 ]; then
+                COUNTS="${COUNTS} (${BREAKING_COUNT} breaking)"
+              elif [ "$WARNING_COUNT" -gt 0 ]; then
+                COUNTS="${COUNTS} (${WARNING_COUNT} potentially breaking)"
+              fi
+              SUMMARY="This release includes ${COUNTS}, via [\`oasdiff\`](https://github.com/oasdiff/oasdiff). The full changelog [is attached to this release](<!-- ASSET_URL -->)."
+              if [ "$BREAKING_COUNT" -gt 0 ] || [ "$WARNING_COUNT" -gt 0 ]; then
+                BREAKING_MD=$(oasdiff breaking --format markdown /tmp/base-openapi.json Sources/Rootly/openapi.json 2>/dev/null || true)
+                SUMMARY=$(printf '%s\n\n<details>\n<summary>Breaking and potentially breaking changes</summary>\n\n%s\n\n</details>' "$SUMMARY" "$BREAKING_MD")
+              fi
+              echo "OPENAPI_HAS_CHANGES=true" >> "$GITHUB_ENV"
+            fi
+          else
+            SUMMARY="_No spec found for tag \`${LATEST_TAG}\`._"
+            echo "OPENAPI_HAS_CHANGES=false" >> "$GITHUB_ENV"
+          fi
+          echo "$SUMMARY" > /tmp/openapi-summary.txt
+          echo "${CHANGELOG:-}" > /tmp/openapi-diff.md
+
+      - id: release_drafter
+        uses: release-drafter/release-drafter@72967cdc98ddd3160f1fc3dff619de365e137dd0 # v7.9.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Inject OpenAPI diff into release body
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          script: |
+            const fs = require('fs');
+            const releaseId = ${{ steps.release_drafter.outputs.id }};
+            const hasChanges = '${{ env.OPENAPI_HAS_CHANGES }}' === 'true';
+            const summary = fs.readFileSync('/tmp/openapi-summary.txt', 'utf8').trim();
+            let inlineContent = summary;
+
+            if (hasChanges) {
+              const { data: assets } = await github.rest.repos.listReleaseAssets({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                release_id: releaseId,
+              });
+              const existing = assets.find(asset => asset.name === 'openapi-diff.md');
+              if (existing) {
+                await github.rest.repos.deleteReleaseAsset({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  asset_id: existing.id,
+                });
+              }
+
+              const diff = fs.readFileSync('/tmp/openapi-diff.md');
+              const { data: asset } = await github.rest.repos.uploadReleaseAsset({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                release_id: releaseId,
+                name: 'openapi-diff.md',
+                data: diff,
+              });
+              inlineContent = summary.replace('<!-- ASSET_URL -->', asset.browser_download_url);
+            }
+
+            const { data: release } = await github.rest.repos.getRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              release_id: releaseId,
+            });
+            let newBody = release.body.replace('<!-- OPENAPI_DIFF -->', inlineContent);
+            if (newBody.length > 125000) {
+              const fallback = inlineContent.replace(
+                /<details>[\s\S]*<\/details>/,
+                '_Breaking and potentially breaking changes omitted; see attached `openapi-diff.md`._',
+              );
+              newBody = release.body.replace('<!-- OPENAPI_DIFF -->', fallback);
+            }
+
+            await github.rest.repos.updateRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              release_id: releaseId,
+              body: newBody,
+            });
