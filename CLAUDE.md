@@ -19,7 +19,7 @@ First build is slow (~4-5 min) because swift-openapi-generator generates types a
 
 This is a Swift SDK for the Rootly API, auto-generated from an OpenAPI 3.0.1 spec using Apple's [swift-openapi-generator](https://github.com/apple/swift-openapi-generator).
 
-**Code generation happens at build time** via a Swift Package Manager build plugin. There is no committed generated code. The generator reads `Sources/Rootly/openapi.json` + `Sources/Rootly/openapi-generator-config.yaml` and produces `Types.swift` and `Client.swift` into `.build/`.
+**Code generation** uses a Swift Package Manager build plugin. Generated sources are also committed under `Sources/Rootly/GeneratedSources`; update the spec with `make fetch-spec` and regenerate the committed files with `make generate`.
 
 **Hand-written code is minimal** — only `Sources/Rootly/Rootly.swift`:
 - `makeClient(token:serverURL:transport:)` — factory function returning the generated `Client` configured with bearer auth
@@ -38,9 +38,11 @@ Downloads from `https://rootly-heroku.s3.amazonaws.com/swagger/v1/swagger.json`.
 
 ## Release Process
 
-Push a semver tag to trigger automated GitHub Release:
+Merge pull requests with the `breaking` or `enhancement` label for major or minor changes; unlabelled changes default to patch. Release Drafter maintains a draft with an OpenAPI diff against the previous release. To publish it, push an annotated semver tag with highlights:
 
 ```bash
-git tag -a "v1.0.0" -m "Release v1.0.0"
+git tag -a "v1.0.0" -m "<highlights>"
 git push origin v1.0.0
 ```
+
+The tag publishes the draft, with its message prepended under Highlights.
