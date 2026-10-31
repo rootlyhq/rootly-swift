@@ -12,6 +12,9 @@ permissions:
 jobs:
   release-please:
     runs-on: blacksmith-2vcpu-ubuntu-2404
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
     steps:
       - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
         id: release
@@ -19,7 +22,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
   openapi-diff:
-    if: ${{ steps.release.outputs.release_created }}
+    if: ${{ needs.release-please.outputs.release_created }}
     needs: release-please
     runs-on: blacksmith-2vcpu-ubuntu-2404
     permissions:
@@ -28,7 +31,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          ref: ${{ steps.release.outputs.tag_name }}
+          ref: ${{ needs.release-please.outputs.tag_name }}
           fetch-depth: 0
 
       - name: Install oasdiff
@@ -41,7 +44,7 @@ jobs:
 
       - name: Generate OpenAPI diff since last release
         env:
-          TAG: ${{ steps.release.outputs.tag_name }}
+          TAG: ${{ needs.release-please.outputs.tag_name }}
         run: |
           LATEST_TAG=$(git tag -l 'v*' --sort=-v:refname | grep -v "^${TAG}$" | head -1)
           if [ -n "$LATEST_TAG" ] && git show "${LATEST_TAG}:Sources/Rootly/openapi.json" > /tmp/base-openapi.json 2>/dev/null; then
@@ -82,7 +85,7 @@ jobs:
       - name: Inject OpenAPI diff into release body
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         env:
-          TAG: ${{ steps.release.outputs.tag_name }}
+          TAG: ${{ needs.release-please.outputs.tag_name }}
         with:
           script: |
             const fs = require('fs');
